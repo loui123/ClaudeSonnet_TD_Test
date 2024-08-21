@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>塔防遊戲</title>
+    <style>
+        #gameCanvas, #talentCanvas {
+            border: 1px solid black;
+        }
+        #talentCanvas {
+            margin-top: 10px;
+        }
+        #resetTalents {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <br>
+    <canvas id="talentCanvas" width="400" height="200"></canvas>
+    <br>
+    <button id="resetTalentsButton">重置天賦</button>
+    <img id="towerImage" src="data:image/png;base64,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" style="display: none;">
+    <script>
+	const GRID_SIZE = 40;
+const COLS = 10;
+const ROWS = 10;
+
+const terrain = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+];
+
+function drawTerrain(ctx) {
+    for (let row = 0; row < ROWS; row++) {
+        for (let col = 0; col < COLS; col++) {
+            if (terrain[row][col] === 1) {
+                ctx.fillStyle = 'gray';
+                ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+            }
+        }
+    }
+}
+class Enemy {
+    constructor(baseHealth, baseSpeed) {
+        this.x = 0;
+        this.y = GRID_SIZE / 2;
+        this.speed = baseSpeed;
+        this.health = baseHealth;
+        this.maxHealth = baseHealth;
+        this.pathIndex = 0;
+        this.radius = 10;
+        this.angle = 0;
+    }
+
+    move() {
+        const path = this.getPath();
+        if (this.pathIndex < path.length) {
+            const [targetX, targetY] = path[this.pathIndex];
+            const dx = targetX * GRID_SIZE - this.x;
+            const dy = targetY * GRID_SIZE - this.y;
+            
+            this.angle = Math.atan2(dy, dx);
+
+            if (Math.abs(dx) < this.speed && Math.abs(dy) < this.speed) {
+                this.pathIndex++;
+            } else {
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+            }
+        }
+    }
+
+    getPath() {
+        const path = [];
+        for (let row = 0; row < ROWS; row++) {
+            for (let col = 0; col < COLS; col++) {
+                if (terrain[row][col] === 1) {
+                    path.push([col, row]);
+                }
+            }
+        }
+        return path;
+    }
+
+    draw(ctx) {
+        // 繪製敵人
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 繪製血條
+        ctx.fillStyle = 'lightgreen';
+        ctx.fillRect(this.x - 15, this.y - 20, 30 * (this.health / this.maxHealth), 5);
+        ctx.strokeStyle = 'black';
+        ctx.strokeRect(this.x - 15, this.y - 20, 30, 5);
+    }
+
+    takeDamage(damage) {
+        this.health -= damage;
+        return this.health <= 0;
+    }
+}
+class Projectile {
+    constructor(x, y, targetEnemy, speed) {
+        this.x = x;
+        this.y = y;
+        this.targetEnemy = targetEnemy;
+        this.speed = speed;
+        this.radius = 5;
+    }
+
+    move() {
+        if (!this.targetEnemy) return;
+
+        const predictedX = this.targetEnemy.x + this.targetEnemy.speed * Math.cos(this.targetEnemy.angle);
+        const predictedY = this.targetEnemy.y + this.targetEnemy.speed * Math.sin(this.targetEnemy.angle);
+
+        const dx = predictedX - this.x;
+        const dy = predictedY - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance > this.speed) {
+            this.x += (dx / distance) * this.speed;
+            this.y += (dy / distance) * this.speed;
+        } else {
+            this.x = this.targetEnemy.x;
+            this.y = this.targetEnemy.y;
+        }
+    }
+
+    draw(ctx) {
+        ctx.fillStyle = 'yellow';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    hasHitTarget() {
+        if (!this.targetEnemy) return false;
+        const dx = this.x - this.targetEnemy.x;
+        const dy = this.y - this.targetEnemy.y;
+        return Math.sqrt(dx * dx + dy * dy) < this.radius + this.targetEnemy.radius;
+    }
+}
+class Tower {
+    static COST = 100;
+    static IMAGE = document.getElementById('towerImage');
+
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.range = 100;
+        this.damage = 10;
+        this.cooldown = 0;
+        this.cooldownTime = 30;
+        this.width = GRID_SIZE;  // 假設我們想讓塔的寬度與網格大小相同
+        this.height = GRID_SIZE; // 高度也與網格大小相同
+    }
+
+    draw(ctx) {
+        // 使用圖片繪製塔
+        ctx.drawImage(Tower.IMAGE, 
+            this.x * GRID_SIZE, 
+            this.y * GRID_SIZE, 
+            this.width, 
+            this.height);
+        
+        // 可選:繪製範圍圈
+        ctx.beginPath();
+        ctx.arc(this.x * GRID_SIZE + this.width/2, this.y * GRID_SIZE + this.height/2, this.range, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(0, 0, 255, 0.2)';
+        ctx.stroke();
+    }
+
+    shoot(enemies, projectiles) {
+        if (this.cooldown > 0) {
+            this.cooldown--;
+            return;
+        }
+
+        for (let enemy of enemies) {
+            const distance = Math.sqrt(
+                (this.x * GRID_SIZE + GRID_SIZE / 2 - enemy.x) ** 2 + 
+                (this.y * GRID_SIZE + GRID_SIZE / 2 - enemy.y) ** 2
+            );
+            
+            if (distance <= this.range) {
+                const projectile = new Projectile(
+                    this.x * GRID_SIZE + GRID_SIZE / 2,
+                    this.y * GRID_SIZE + GRID_SIZE / 2,
+                    enemy,
+                    5
+                );
+                projectiles.push(projectile);
+                this.cooldown = this.cooldownTime;
+                break;
+            }
+        }
+    }
+}
+class TalentTree {
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+         this.talents = [
+            { name: "增加塔傷害", level: 0, maxLevel: 5, effect: (level) => Tower.prototype.damage *= (1 + level * 0.1) },
+            { name: "增加塔攻速", level: 0, maxLevel: 5, effect: (level) => Tower.prototype.cooldownTime *= (1 - level * 0.05) },
+            { name: "增加金幣獲取", level: 0, maxLevel: 5, effect: (level) => this.goldMultiplier = 1 + level * 0.1 }
+        ];
+        this.goldMultiplier = 1;
+        this.loadTalentState();
+        this.draw();
+    }
+
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.fillStyle = 'black';
+        this.ctx.font = '16px Arial';
+        this.ctx.fillText(`天賦點數: ${this.talentPoints}`, 10, 20);
+
+        this.talents.forEach((talent, index) => {
+            const x = 10 + index * 130;
+            const y = 50;
+            this.ctx.fillStyle = talent.level > 0 ? 'green' : 'gray';
+            this.ctx.fillRect(x, y, 120, 30);
+            this.ctx.fillStyle = 'white';
+            this.ctx.fillText(`${talent.name} (${talent.level}/${talent.maxLevel})`, x + 5, y + 20);
+        });
+    }
+
+    handleClick(x, y) {
+        if (this.talentPoints > 0) {
+            this.talents.forEach((talent, index) => {
+                const talentX = 10 + index * 130;
+                const talentY = 50;
+                if (x >= talentX && x <= talentX + 120 && y >= talentY && y <= talentY + 30) {
+                    if (talent.level < talent.maxLevel) {
+                        talent.level++;
+                        this.talentPoints--;
+                        talent.effect(talent.level);
+                        this.saveTalentState();
+                        this.draw();
+                    }
+                }
+            });
+        }
+    }
+
+    addTalentPoint() {
+        this.talentPoints++;
+        this.saveTalentState();
+        this.draw();
+    }
+
+    reset() {
+        this.talents.forEach(talent => {
+            while(talent.level > 0) {
+                talent.level--;
+                this.talentPoints++;
+                talent.effect(talent.level);
+            }
+        });
+        this.saveTalentState();
+        this.draw();
+        this.applyTalents();
+    }
+
+    saveTalentState() {
+		const talentState = {
+            talentPoints: this.talentPoints,
+            talentLevels: this.talents.map(t => t.level)
+        };
+        localStorage.setItem('talentState', JSON.stringify(talentState));
+    }
+
+    loadTalentState() {
+        const savedState = localStorage.getItem('talentState');
+        if (savedState) {
+            const state = JSON.parse(savedState);
+            this.talentPoints = state.talentPoints;
+            state.talentLevels.forEach((level, index) => {
+                this.talents[index].level = level;
+            });
+            this.applyTalents();
+        }
+    }
+	
+    applyTalents() {
+		// 重置所有受天賦影響的數值到初始狀態
+        Tower.prototype.damage = 10; // 假設這是初始傷害
+        Tower.prototype.cooldownTime = 30; // 假設這是初始冷卻時間
+        this.goldMultiplier = 1;
+
+        // 然後應用所有天賦效果
+        this.talents.forEach(talent => talent.effect(talent.level));
+    }
+}
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const talentCanvas = document.getElementById('talentCanvas');
+const talentTree = new TalentTree(talentCanvas);
+
+let enemies = [];
+let towers = [];
+let projectiles = [];
+let explosions = [];
+let playerHealth = 100;
+let score = 0;
+let gold = 100;
+
+let currentWave = 0;
+const totalWaves = 15;
+let enemiesInWave = 0;
+let enemiesSpawned = 0;
+let baseEnemyHealth = 5;
+let baseEnemySpeed = 1;
+
+window.onload = function() {
+    if (Tower.IMAGE.complete) {
+        startGame();
+    } else {
+        Tower.IMAGE.onload = startGame;
+    }
+	talentTree.draw();
+}
+
+function startGame() {
+	talentTree.applyTalents(); // 應用保存的天賦效果
+    talentTree.draw(); // 重繪天賦樹
+    startNextWave();
+    gameLoop();
+}
+
+class Explosion {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.radius = 1;
+        this.maxRadius = 20;
+        this.speed = 1;
+    }
+
+    update() {
+        this.radius += this.speed;
+        return this.radius <= this.maxRadius;
+    }
+
+    draw(ctx) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 100, 0, ' + (1 - this.radius / this.maxRadius) + ')';
+        ctx.fill();
+    }
+}
+
+function spawnEnemy() {
+    if (enemiesSpawned < enemiesInWave) {
+        enemies.push(new Enemy(baseEnemyHealth, baseEnemySpeed));
+        enemiesSpawned++;
+        setTimeout(spawnEnemy, 1000); // 每秒生成一個敵人
+    }
+}
+
+function startNextWave() {
+    currentWave++;
+    if (currentWave <= totalWaves) {
+        enemiesInWave = Math.floor(Math.random() * 16) + 15; // 15-30 敵人
+        enemiesSpawned = 0;
+        baseEnemyHealth += Math.floor(Math.random() * 7) + 2; // 增加2-8生命
+        baseEnemySpeed *= (1 + (Math.random() * 0.08 + 0.02)); // 增加2%-10%速度
+        spawnEnemy();
+        if(currentWave !== 1)talentTree.addTalentPoint();
+        talentTree.draw();
+    }
+}
+
+function spawnTower(event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.floor((event.clientX - rect.left) / GRID_SIZE);
+    const y = Math.floor((event.clientY - rect.top) / GRID_SIZE);
+    
+    if (terrain[y][x] === 0 && !towers.some(t => t.x === x && t.y === y) && gold >= Tower.COST) {
+        towers.push(new Tower(x, y));
+        gold -= Tower.COST;  // 扣除塔的成本
+    }
+}
+
+function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawTerrain(ctx);
+
+    enemies = enemies.filter(enemy => {
+        enemy.move();
+        enemy.draw(ctx);
+
+        if (enemy.pathIndex >= enemy.getPath().length) {
+            playerHealth -= 10;
+            return false;
+        }
+        return true;
+    });
+
+    towers.forEach(tower => {
+        tower.draw(ctx);
+        tower.shoot(enemies, projectiles);
+    });
+
+    projectiles = projectiles.filter(projectile => {
+        projectile.move();
+        projectile.draw(ctx);
+
+        if (projectile.hasHitTarget()) {
+            const hitEnemy = projectile.targetEnemy;
+            if (hitEnemy && hitEnemy.takeDamage(10)) { // 敵人受到傷害
+                explosions.push(new Explosion(hitEnemy.x, hitEnemy.y));
+                const index = enemies.indexOf(hitEnemy);
+                if (index > -1) {
+                    enemies.splice(index, 1);
+                    score += 10;
+					gold += Math.floor((Math.random() * 5 + 1) * talentTree.goldMultiplier);
+                }
+            }
+            return false;
+        }
+        return true;
+    });
+
+    explosions = explosions.filter(explosion => {
+        const shouldContinue = explosion.update();
+        explosion.draw(ctx);
+        return shouldContinue;
+    });
+
+    // 檢查是否需要開始下一波
+    if (enemies.length === 0 && enemiesSpawned === enemiesInWave) {
+        if (currentWave < totalWaves) {
+            startNextWave();
+        }
+    }
+
+    // 更新UI
+    ctx.fillStyle = 'black';
+    ctx.font = '16px Arial';
+    ctx.fillText(`生命值: ${playerHealth}`, 10, 20);
+    ctx.fillText(`分數: ${score}`, 10, 40);
+    ctx.textAlign = 'right';
+    ctx.fillText(`Gold: ${gold}`, canvas.width - 10, 20);
+    ctx.fillText(`Wave: ${currentWave}/${totalWaves}`, canvas.width - 10, 40);
+    ctx.textAlign = 'left';
+
+    if (playerHealth <= 0) {
+        ctx.fillStyle = 'black';
+        ctx.font = '30px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('遊戲結束', canvas.width / 2, canvas.height / 2);
+        ctx.textAlign = 'left';
+        return;
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+talentCanvas.addEventListener('click', (event) => {
+    const rect = talentCanvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    talentTree.handleClick(x, y);
+    talentTree.applyTalents();
+});
+
+document.getElementById('resetTalentsButton').addEventListener('click', () => {
+    talentTree.reset();
+    // 重置遊戲相關的數值
+    Tower.prototype.damage = 10; // 假設這是初始傷害
+    Tower.prototype.cooldownTime = 30; // 假設這是初始冷卻時間
+    talentTree.goldMultiplier = 1;
+});
+canvas.addEventListener('click', spawnTower);
+	</script>
+</body>
+</html>
